@@ -1,12 +1,15 @@
 ﻿param (
-    [string]$crmDiscoveryUrlSource = "",
-    [string]$usernameSource= "",
-    [string]$passwordSource = "",
-    [string]$orgNameSource = "",
-    [string]$filePath = "test.zip",
-    [string]$xmlPath = "fetchXmls.xml",
-    [string]$modulePath = "..\Adxstudio.Xrm.PowerShell"
+    [string]$crmDiscoveryUrlSource,
+    [string]$usernameSource,
+    [string]$passwordSource,
+    [string]$orgNameSource,
+    [string]$filePath,
+    [string]$xmlPath,
+    [string]$modulePath = "../Adxstudio.Xrm.PowerShell"
 )
+
+# Set security protocol to TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; 
 
 $error.clear()
 
@@ -21,10 +24,7 @@ $targetFile = $filePath
 
 $dataExportFetch = [IO.File]::ReadAllText($xmlPath)
 
-Import-Module $modulePath #"C:\Program Files (x86)\Adxstudio\ALM Toolkit\1.0.0017\Adxstudio.Xrm.PowerShell"
-
-
-
+Import-Module $modulePath 
 
 function exportData {
     $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $username_Source, ($password_Source | ConvertTo-SecureString -AsPlainText -Force)
